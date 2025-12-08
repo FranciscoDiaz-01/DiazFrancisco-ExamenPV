@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { MEDICOS_INICIALES } from 'src/data/dataInicial';
+import { MEDICOS_INICIALES } from '../data/dataInicial';
 
 const AuthContext = createContext();
 
@@ -9,11 +9,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Recuperar sesión activa
     const storedUser = JSON.parse(localStorage.getItem('currentUser'));
     if (storedUser) setUser(storedUser);
 
-    // Inicializa la base de datos de usuarios si no existe
     if (!localStorage.getItem('users_db')) {
       localStorage.setItem('users_db', JSON.stringify([...MEDICOS_INICIALES]));
     }
@@ -26,7 +24,8 @@ export const AuthProvider = ({ children }) => {
     if (foundUser) {
       setUser(foundUser);
       localStorage.setItem('currentUser', JSON.stringify(foundUser));
-      return { success: true };
+      // Devolvemos el usuario encontrado 
+      return { success: true, user: foundUser };
     }
     return { success: false, message: 'Credenciales inválidas' };
   };
@@ -42,7 +41,6 @@ export const AuthProvider = ({ children }) => {
     usersDb.push(newUser);
     localStorage.setItem('users_db', JSON.stringify(usersDb));
     
-    // login automatico
     setUser(newUser);
     localStorage.setItem('currentUser', JSON.stringify(newUser));
     return { success: true };

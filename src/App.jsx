@@ -1,41 +1,54 @@
-import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import { TurnosProvider } from './context/TurnosContext';
+// IMPORTANTE: Importamos el nuevo Provider
+import { HorariosProvider } from './context/HorariosContext';
+
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import DashboardPaciente from './pages/DashboardPaciente';
+import DashboardPaciente from './pages/Paciente';
+// Asegúrate de importar el DashboardMedico (debes haber creado el archivo previamente)
+import DashboardMedico from './pages/Medico'; 
 import DetalleTurno from './pages/DetalleTurno';
-
-const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/login" />;
-};
 
 function App() {
   return (
     <AuthProvider>
       <TurnosProvider>
-        <BrowserRouter>
-          
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/registro" element={<Register />} />
-            
-            <Route path="/paciente/turnos" element={
-              <PrivateRoute>
-                <DashboardPaciente />
-              </PrivateRoute>
-            } />
-            
-            <Route path="/turno/:id" element={
-              <PrivateRoute>
-                <DetalleTurno />
-              </PrivateRoute>
-            } />
+        {/* IMPORTANTE: Envolvemos la app con el proveedor de horarios */}
+        <HorariosProvider>
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/registro" element={<Register />} />
+              
+              {/* Ruta Protegida para Pacientes */}
+              <Route path="/paciente/turnos" element={
+                <ProtectedRoute>
+                  <DashboardPaciente />
+                </ProtectedRoute>
+              } />
 
-            <Route path="*" element={<Navigate to="/login" />} />
-          </Routes>
-        </BrowserRouter>
+              {/* NUEVA RUTA: Ruta Protegida para Médicos */}
+              <Route path="/medico/agenda" element={
+                <ProtectedRoute>
+                  <DashboardMedico />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/turno/:id" element={
+                <ProtectedRoute>
+                  <DetalleTurno />
+                </ProtectedRoute>
+              } />
+
+              <Route path="*" element={<Navigate to="/login" />} />
+            </Routes>
+          </BrowserRouter>
+        </HorariosProvider>
       </TurnosProvider>
     </AuthProvider>
   );
