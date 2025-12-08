@@ -1,39 +1,42 @@
 
 
-
 .login-page {
- 
-  position: fixed; 
+  
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;  
-  height: 100vh; 
-  
-  
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   
-  background-color: #1a1a1a;
-  z-index: 9999; 
+
+  background-color: #f0f2f5;
+  z-index: 9999;
   margin: 0;
   padding: 0;
 }
 
-
 .login-card {
-  background-color: #242424; 
+ 
+  background-color: #ffffff;
   padding: 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  
+  
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  
   width: 100%;
   max-width: 400px;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
+ 
+  color: #333333;
 }
-
 
 .brand-header {
   display: flex;
@@ -41,9 +44,9 @@
   justify-content: center;
   gap: 10px;
   margin-bottom: 10px;
-  color: #ddd;
+  
+  color: #1a1a1a;
 }
-
 
 .login-form {
   display: flex;
@@ -51,29 +54,38 @@
   gap: 15px;
 }
 
-
 .login-input {
   width: 100%;
   padding: 12px;
-  background-color: #333;
-  border: 1px solid #444;
+  
+ 
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  
   border-radius: 6px;
-  color: white;
+  
+  
+  color: #495057;
+  
   font-size: 1rem;
   outline: none;
-  box-sizing: border-box; 
-  transition: border-color 0.3s;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 .login-input:focus {
   border-color: #2563eb; 
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); 
 }
 
+.login-input::placeholder {
+  color: #adb5bd; 
+}
 
 .login-btn {
   width: 100%;
   padding: 12px;
-  background-color: #2563eb;
+  background-color: #2563eb; 
   color: white;
   border: none;
   border-radius: 6px;
@@ -87,16 +99,17 @@
   background-color: #1d4ed8;
 }
 
-
 .login-footer {
   font-size: 0.9rem;
-  color: #aaa;
+  
+  color: #6c757d;
   margin-top: 10px;
 }
 
 .login-link {
-  color: #646cff;
+  color: #2563eb; 
   text-decoration: none;
+  font-weight: 600;
 }
 
 .login-link:hover {
