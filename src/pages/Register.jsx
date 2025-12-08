@@ -47,7 +47,7 @@ export default function Register() {
     
     if (res.success) {
       alert("Registro exitoso");
-      // Si es médico, lo mandamos a inicializar su agenda (manejado en Login o aquí si hicieras auto-login completo)
+      // Si es médico, lo manda a inicializar su agenda 
       
       navigate(rol === 'paciente' ? '/paciente/turnos' : '/medico/agenda');
     } else {

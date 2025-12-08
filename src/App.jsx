@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { TurnosProvider } from './context/TurnosContext';
-// IMPORTANTE: Importamos el nuevo Provider
 import { HorariosProvider } from './context/HorariosContext';
 
 import Navbar from './components/Navbar';
@@ -9,15 +8,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardPaciente from './pages/Paciente';
-// Asegúrate de importar el DashboardMedico (debes haber creado el archivo previamente)
 import DashboardMedico from './pages/Medico'; 
 import DetalleTurno from './pages/DetalleTurno';
-
+import './index.css';
 function App() {
   return (
     <AuthProvider>
       <TurnosProvider>
-        {/* IMPORTANTE: Envolvemos la app con el proveedor de horarios */}
+       
         <HorariosProvider>
           <BrowserRouter>
             <Navbar />
@@ -32,7 +30,7 @@ function App() {
                 </ProtectedRoute>
               } />
 
-              {/* NUEVA RUTA: Ruta Protegida para Médicos */}
+              {/* Ruta Protegida para Médicos */}
               <Route path="/medico/agenda" element={
                 <ProtectedRoute>
                   <DashboardMedico />

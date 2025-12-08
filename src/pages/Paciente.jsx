@@ -18,25 +18,21 @@ export default function DashboardPaciente() {
     setMedicos(db.filter(u => u.rol === 'medico'));
   }, []);
 
-  
   const getFechaManana = () => {
     const hoy = new Date();
     const manana = new Date(hoy);
-    manana.setDate(hoy.getDate() + 1); 
+    manana.setDate(hoy.getDate() + 1);
     return manana.toLocaleDateString();
   };
 
   const fechaTurno = getFechaManana();
-  
-
   const horarios = medicoSeleccionado ? getHorariosMedico(medicoSeleccionado.id) : [];
 
   const handleReservar = (hora) => {
-    // Mostramos la fecha de mañana en la confirmación
     if (!confirm(`¿Confirmar turno con ${medicoSeleccionado.nombre} para MAÑANA (${fechaTurno}) a las ${hora}?`)) return;
 
     const turnoData = {
-      fecha: fechaTurno, // GUARDAMOS LA FECHA DE MAÑANA
+      fecha: fechaTurno,
       hora,
       medicoId: medicoSeleccionado.id,
       medicoNombre: medicoSeleccionado.nombre,
@@ -57,34 +53,42 @@ export default function DashboardPaciente() {
   const turnosOcupados = medicoSeleccionado ? getTurnosOcupados(medicoSeleccionado.id) : [];
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Panel del Paciente: {user.nombre}</h1>
+    <div className="container">
+      <header style={{ marginBottom: '2rem' }}>
+        <h1>Hola, {user.nombre} 👋</h1>
+        <p className="subtitle">Gestiona tus turnos de salud de manera fácil.</p>
+      </header>
       
       {!medicoSeleccionado ? (
-        <>
-          {/* Actualizamos el texto informativo */}
-          <h3>Seleccione un Médico para ver sus horarios de MAÑANA ({fechaTurno}):</h3>
-          <div style={{ display: 'grid', gap: '10px', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
+        <div className="card">
+          <h3>📅 Seleccione un Profesional</h3>
+          <p style={{ color: '#64748b', marginBottom: '20px' }}>Turnos disponibles para MAÑANA ({fechaTurno})</p>
+          
+          <div className="medicos-grid">
             {medicos.map(med => (
-              <div key={med.id} onClick={() => setMedicoSeleccionado(med)} 
-                   style={{ border: '1px solid #ccc', padding: '15px', cursor: 'pointer', borderRadius: '5px' }}>
+              <div key={med.id} onClick={() => setMedicoSeleccionado(med)} className="medico-card">
+                <div style={{ fontSize: '2rem', marginBottom: '10px' }}>🩺</div>
                 <h4>{med.nombre}</h4>
                 <p>{med.especialidad}</p>
               </div>
             ))}
           </div>
-        </>
+        </div>
       ) : (
-        <div>
-          <button onClick={() => setMedicoSeleccionado(null)} style={{marginBottom:'10px'}}>← Volver</button>
+        <div className="card">
+          <button className="btn-secondary" onClick={() => setMedicoSeleccionado(null)} style={{marginBottom:'20px'}}>
+            ← Volver a la lista
+          </button>
           
+          <h2>Agenda de {medicoSeleccionado.nombre}</h2>
+          <p style={{ marginBottom: '1rem' }}>Especialidad: <strong>{medicoSeleccionado.especialidad}</strong> | Fecha: <strong>{fechaTurno}</strong></p>
           
-          <h2>Turnos disponibles para MAÑANA ({fechaTurno}) con {medicoSeleccionado.nombre}</h2>
-          
+          <hr style={{ border: '0', borderTop: '1px solid #eee', margin: '20px 0' }}/>
+
           {horarios.length === 0 ? (
-            <p>Este médico no tiene horarios disponibles.</p>
+            <p className="alert-box">Este médico no tiene horarios configurados para mañana.</p>
           ) : (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            <div className="horarios-grid">
               {horarios.map(hora => {
                 const ocupado = turnosOcupados.includes(hora);
                 return (
@@ -92,13 +96,7 @@ export default function DashboardPaciente() {
                     key={hora}
                     disabled={ocupado}
                     onClick={() => handleReservar(hora)}
-                    style={{ 
-                      padding: '10px 20px', 
-                      backgroundColor: ocupado ? '#ffcccc' : '#ccffcc',
-                      cursor: ocupado ? 'not-allowed' : 'pointer',
-                      border: '1px solid #999',
-                      borderRadius: '4px'
-                    }}
+                    className={`btn-hora ${ocupado ? 'ocupado' : 'libre'}`}
                   >
                     {hora}
                   </button>
