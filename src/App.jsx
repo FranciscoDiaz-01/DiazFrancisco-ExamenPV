@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import DashboardPaciente from './pages/Paciente';
 import DashboardMedico from './pages/Medico'; 
 import DetalleTurno from './pages/DetalleTurno';
+import Profile from './pages/Profile';
 import './index.css';
 function App() {
   return (
@@ -22,6 +23,13 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/registro" element={<Register />} />
+              
+              {/* Ruta Protegida para Perfil */}
+              <Route path="/perfil" element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
               
               {/* Ruta Protegida para Pacientes */}
               <Route path="/paciente/turnos" element={

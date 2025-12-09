@@ -51,8 +51,32 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('currentUser');
   };
 
+  const updateUser = (updatedData) => {
+    const usersDb = JSON.parse(localStorage.getItem('users_db')) || [];
+    const userIndex = usersDb.findIndex(u => u.id === user.id);
+    
+    if (userIndex === -1) {
+      return { success: false, message: 'Usuario no encontrado' };
+    }
+
+    // Validar que el email no esté en uso por otro usuario
+    const emailInUse = usersDb.some(u => u.email === updatedData.email && u.id !== user.id);
+    if (emailInUse) {
+      return { success: false, message: 'El correo ya está en uso' };
+    }
+
+    const updatedUser = { ...usersDb[userIndex], ...updatedData };
+    usersDb[userIndex] = updatedUser;
+    
+    localStorage.setItem('users_db', JSON.stringify(usersDb));
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    setUser(updatedUser);
+    
+    return { success: true, user: updatedUser };
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

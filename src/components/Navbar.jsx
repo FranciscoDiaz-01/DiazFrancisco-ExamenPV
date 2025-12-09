@@ -16,10 +16,13 @@ export default function Navbar() {
         <span style={{ fontSize: '1.5rem' }}>🏥</span>
         <strong style={{ fontSize: '1.2rem' }}>Turnos Norte</strong>
       </div>
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
         {user ? (
           <>
-            <span style={{ marginRight: '15px', opacity: 0.9 }}>{user.nombre}</span>
+            <span style={{ opacity: 0.9 }}>{user.nombre}</span>
+            <Link to="/perfil" className="nav-link" title="Ver perfil">
+              👤
+            </Link>
             <button onClick={handleLogout} className="nav-btn-logout">Cerrar Sesión</button>
           </>
         ) : (

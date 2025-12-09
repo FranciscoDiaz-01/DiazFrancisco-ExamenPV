@@ -8,7 +8,7 @@ export default function Register() {
   const [genero, setGenero] = useState('masculino'); 
   
   const [formData, setFormData] = useState({
-    nombre: '', email: '', pass: '', dni: '', telefono: '', especialidad: ''
+    nombre: '', email: '', pass: '', dni: '', telefono: '', especialidad: '', obraSocial: '', numeroAsociado: ''
   });
   
   const { register } = useAuth();
@@ -40,7 +40,9 @@ export default function Register() {
       genero: rol === 'medico' ? genero : null, 
       
       // Campos específicos según rol
-      ...(rol === 'paciente' ? { dni: formData.dni, telefono: formData.telefono } : { especialidad: formData.especialidad })
+      ...(rol === 'paciente' 
+        ? { dni: formData.dni, telefono: formData.telefono, obraSocial: formData.obraSocial, numeroAsociado: formData.numeroAsociado } 
+        : { dni: formData.dni, especialidad: formData.especialidad })
     };
 
     const res = register(datosUsuario);
@@ -108,11 +110,24 @@ export default function Register() {
           <>
             <input name="dni" placeholder="DNI" required onChange={handleChange} />
             <input name="telefono" placeholder="Teléfono" required onChange={handleChange} />
+            <select name="obraSocial" required onChange={handleChange} style={{ padding: '8px' }}>
+              <option value="">Seleccionar Obra Social</option>
+              <option value="OSDE">OSDE</option>
+              <option value="OSPE">OSPE</option>
+              <option value="OSDOP">OSDOP</option>
+              <option value="PAMI">PAMI</option>
+              <option value="ISJ">ISJ</option>
+              <option value="Mutual AyE">Mutual AyE</option>
+            </select>
+            <input name="numeroAsociado" placeholder="Número de Asociado" required onChange={handleChange} />
           </>
         )}
 
         {rol === 'medico' && (
-          <input name="especialidad" placeholder="Especialidad (ej: Cardiología)" required onChange={handleChange} />
+          <>
+            <input name="dni" placeholder="DNI" required onChange={handleChange} />
+            <input name="especialidad" placeholder="Especialidad (ej: Cardiología)" required onChange={handleChange} />
+          </>
         )}
 
         <button type="submit" style={{ marginTop: '10px', padding: '10px', fontWeight: 'bold' }}>
